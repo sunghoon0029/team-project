@@ -33,19 +33,14 @@ public class Account implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-//	@Column(length = 100)
 	private String nickname;
 	
-//	@Column(length = 100)
 	private String email;
 	
-//	@Column(length = 200)
 	private String password;
 	
-//	@Column(length = 30)
 	private String gender;
 	
-//	@Column(length = 30)
 	private LocalDate birthday;
 	
 	private int age;
@@ -54,6 +49,7 @@ public class Account implements UserDetails {
 	private Role role;
 	
 	private String created_at;
+	
 	
 //	Account(1) : ReadingProgress(N) 설정
 	@OneToMany(mappedBy = "account_id")
@@ -67,22 +63,10 @@ public class Account implements UserDetails {
 	@OneToMany(mappedBy = "account_id")
 	public Set<ReadingNoteComment> readingNoteComment;
 	
-//    @PrePersist
-//    public void createdAt() {
-//        this.created_at = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//    }
-    
-//	@Builder
-//	public Account(String nickname, String email, String password, String gender, LocalDate birthday, int age, String created_at, Role role) {
-//		this.nickname = nickname;
-//        this.email = email;
-//        this.password = password;
-//        this.gender = gender;
-//        this.birthday = birthday;
-//        this.age = age;
-//        this.created_at = created_at;
-//        this.role = role;
-//	}
+//	Account(1) : Meeting(N) 설정
+	@OneToMany(mappedBy = "account_id")
+	public Set<Meeting> meeting;
+	
 	
     @JsonIgnore
     @Override

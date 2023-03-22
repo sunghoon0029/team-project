@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 
 import lombok.Data;
 
-//@RedisHash(value = "rank", timeToLive = 30)
 @Entity
 @Data
 public class ReadingNote extends Base{
@@ -35,11 +34,6 @@ public class ReadingNote extends Base{
 	private String reading_note_file_url;
 	
 	private int reading_note_open;
-	
-//    @PrePersist
-//    public void createdAt() {
-//        this.created_at = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-//    }
 	
 	
 //	Account(1) : ReadingNote(N) 설정
