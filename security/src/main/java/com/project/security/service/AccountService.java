@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,30 +28,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AccountService {
 	
-	private final AccountRepository accountRepository;
+	@Autowired
+	private AccountRepository accountRepository;
+	
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final RedisTemplate redisTemplate;
 	
-//	// 회원 가입
-//    // readOnly가 true되어있기 때문에 @Transactional을 써줘야 false가 됌.
-//    @Transactional
-//    public Long signUp(AccountSignUpRequestDto request) throws Exception {
-//
-//        // 이메일 중복 검사
-//        if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
-//            throw new Exception("이미 존재하는 이메일 입니다.");
-//        }
-//        
-//		// 현재일자와 생년월일을 이용한 만나이 계산
-//		LocalDate birthday = request.getBirthday();
-//		LocalDate nowDate = LocalDate.now();
-//		request.setAge(nowDate.getYear() - birthday.getYear());
-//        Account account = accountRepository.save(request.toEntity());
-//
-//        return account.getId();
-//    }
-    
     // JWT 로그인
 	public JwtToken login(String email, String password) {
 		// 1. Login ID/PW 를 기반으로 Authentication 객체 생성
@@ -132,6 +116,10 @@ public class AccountService {
 	public void removeAccount(Long id) {
 		
 		accountRepository.deleteById(id);
+	}
+	
+	public Optional<Account> accountId(String id) {
+		return accountRepository.findByEmail(id);
 	}
         
 }

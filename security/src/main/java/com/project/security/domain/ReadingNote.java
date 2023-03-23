@@ -1,18 +1,31 @@
 package com.project.security.domain;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ReadingNote extends Base{
 
 	@Id @Column(name = "id")
@@ -36,27 +49,21 @@ public class ReadingNote extends Base{
 	private int reading_note_open;
 	
 	
-//	Account(1) : ReadingNote(N) 설정
-//	@ManyToOne
-	@Column(name = "account_id")
-	private Long account_id;
+	// Account(1) : ReadingNote(N) 설정
+	@ManyToOne
+	@JoinColumn(name="account_id")
+	@JsonIgnoreProperties({"readingNote"})
+	private Account account;
 	
-//	Book(1) : ReadingNote(N) 설정
+	// Book(1) : ReadingNote(N) 설정
 //	@ManyToOne
 	@Column(name = "book_id")
 	private Long book_id;
 	
-////	BookCategory(1) : ReadingNote(N) 설정
-////	@ManyToOne
-//	@Column(name = "book_category_id")
-//	private Integer book_category_id;
-	
-////	ReadingNote(1) : ReadingNoteBookmark(N) 설정
-//	@OneToMany(mappedBy = "reading_note_id")
-//	public List<ReadingNoteBookmark> readingNoteBookmark;
-	
-//	ReadingNote(1) : ReadingNoteComment(N) 설정
-	@OneToMany(mappedBy = "reading_note_id")
-	public Set<ReadingNoteComment> readingNoteComment;
+	// ReadingNote(1) : ReadingNoteComment(N) 설정
+	@OneToMany(mappedBy="readingNote", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({"readingNote"})
+	@Builder.Default
+	private List<ReadingNoteComment> readingNoteComment = new ArrayList<>();
 	
 }

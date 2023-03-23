@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.security.domain.ReadingProgress;
+import com.project.security.jwt.SecurityUtil;
+import com.project.security.service.AccountService;
 import com.project.security.service.ReadingProgressService;
 
 @RestController
@@ -22,9 +25,11 @@ public class ReadingProgressController {
 
 	@Autowired
 	private ReadingProgressService readingProgressService;
+	@Autowired
+	private AccountService accountService;
 	
 	@GetMapping("/list")
-	public List<ReadingProgress> getAllReadingProgress() {
+	public List<ReadingProgress> getAll() {
 		
 		return readingProgressService.getReadingProgressList();
 	}
@@ -35,10 +40,18 @@ public class ReadingProgressController {
 		return readingProgressService.getReadingProgressListById(id);
 	}
 	
+//	@PostMapping("/regist")
+//	public ReadingProgress registReadingProgress(@RequestBody ReadingProgress readingProgress) {
+//		
+//		return readingProgressService.registReadingProgress(readingProgress);
+//	}
+	
 	@PostMapping("/regist")
-	public ReadingProgress registReadingProgress(@RequestBody ReadingProgress readingProgress) {
+	public void registReadingProgress(@RequestBody ReadingProgress readingProgress) {
 		
-		return readingProgressService.registReadingProgress(readingProgress);
+		readingProgress.setAccount(accountService.accountId(SecurityUtil.getCurrentAccountEmail()).get());
+		
+		readingProgressService.registReadingProgress(readingProgress);
 	}
 	
 	@PutMapping("/update/{id}")

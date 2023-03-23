@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.security.domain.ReadingNote;
+import com.project.security.jwt.SecurityUtil;
+import com.project.security.service.AccountService;
 import com.project.security.service.ReadingNoteService;
 
 @RestController
@@ -22,6 +24,8 @@ public class ReadingNoteController {
 
 	@Autowired
 	private ReadingNoteService readingNoteService;
+	@Autowired
+	private AccountService accountService;
 	
 	@GetMapping("/list")
 	public List<ReadingNote> getAll() {
@@ -35,10 +39,18 @@ public class ReadingNoteController {
 		return readingNoteService.getReadingNoteListById(id);
 	}
 	
+//	@PostMapping("/regist")
+//	public ReadingNote registReadingNote(@RequestBody ReadingNote readingNote) {
+//		
+//		return readingNoteService.registReadingNote(readingNote);
+//	}
+	
 	@PostMapping("/regist")
-	public ReadingNote registReadingNote(@RequestBody ReadingNote readingNote) {
+	public void registReadingNote(@RequestBody ReadingNote readingNote) {
 		
-		return readingNoteService.registReadingNote(readingNote);
+		readingNote.setAccount(accountService.accountId(SecurityUtil.getCurrentAccountEmail()).get());
+		
+		readingNoteService.registReadingNote(readingNote);
 	}
 	
 	@PutMapping("/update/{id}")

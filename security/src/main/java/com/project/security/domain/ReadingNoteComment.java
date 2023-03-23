@@ -1,15 +1,25 @@
 package com.project.security.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ReadingNoteComment extends Base{
 
 	@Id
@@ -20,14 +30,17 @@ public class ReadingNoteComment extends Base{
 	
 	private int reading_note_comment_like;
 	
-//	Account(1) : ReadingNoteComment(N) 설정
-//	@ManyToOne
-	@Column(name = "account_id")
-	private Long account_id;
+
+	// Account(1) : ReadingNoteComment(N) 설정
+	@ManyToOne
+	@JoinColumn(name="account_id")
+	@JsonIgnoreProperties({"readingNoteComment"})
+	private Account account;
 	
-//	ReadingNote(1) : ReadingNoteComment(N) 설정
-//	@ManyToOne
-	@Column(name = "reading_note_id")
-	private Long reading_note_id;
+	// ReadingNote(1) : ReadingNoteComment(N) 설정
+	@ManyToOne
+	@JoinColumn(name="reading_note_id")
+	@JsonIgnoreProperties({"readingNoteComment"})
+	private ReadingNote readingNote;
 	
 }

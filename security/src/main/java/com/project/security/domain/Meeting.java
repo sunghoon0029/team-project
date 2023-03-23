@@ -1,18 +1,21 @@
 package com.project.security.domain;
 
-import java.util.Set;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Meeting {
 	
 	@Id
@@ -37,13 +40,13 @@ public class Meeting {
 	
 	private int gender_percent;
 	
-//	Account(1) : Meeting(N) 설정
-//	@ManyToOne
-	@Column(name = "account_id")
-	private Long account_id;
+////	Account(1) : Meeting(N) 설정
+////	@ManyToOne
+//	@Column(name = "account_id")
+//	private Long account_id;
 	
 ////	Meeting(1) : MeetingBoard(N) 설정
 //	@OneToMany(mappedBy = "meeting_id")
-//	public Set<Meeting> meeting;
+//	public List<Meeting> meeting;
 
 }

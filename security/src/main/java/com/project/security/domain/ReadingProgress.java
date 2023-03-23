@@ -1,15 +1,25 @@
 package com.project.security.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ReadingProgress {
 
 	@Id
@@ -24,9 +34,11 @@ public class ReadingProgress {
 	
 	private Integer attainment_percent;
 
-//	Account(1) : ReadingProgress(N) 설정
-//	@ManyToOne
-	@Column(name = "account_id")
-	private Long account_id;
+	
+	// Account(1) : ReadingProgress(N) 설정
+	@ManyToOne
+	@JoinColumn(name="account_id")
+	@JsonIgnoreProperties({"readingProgress"})
+	private Account account;
 	
 }

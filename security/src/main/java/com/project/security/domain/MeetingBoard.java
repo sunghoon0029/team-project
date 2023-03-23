@@ -6,10 +6,17 @@
 //import javax.persistence.GenerationType;
 //import javax.persistence.Id;
 //
-//import lombok.Data;
+//import lombok.AllArgsConstructor;
+//import lombok.Builder;
+//import lombok.Getter;
+//import lombok.NoArgsConstructor;
+//import lombok.Setter;
 //
 //@Entity
-//@Data
+//@Getter @Setter
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Builder
 //public class MeetingBoard {
 //
 //	@Id
@@ -29,6 +36,6 @@
 //	
 //////	MeetingBoard(1) : MeetingBoardComment(N) 설정
 ////	@OneToMany(mappedBy = "meeting_board_id")
-////	public Set<MeetingBoardComment> MeetingBoardComment;
+////	public List<MeetingBoardComment> MeetingBoardComment;
 //	
 //}

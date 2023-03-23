@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.project.security.domain.ReadingNoteComment;
 import com.project.security.repository.ReadingNoteCommentRepository;
+import com.project.security.repository.ReadingNoteRepository;
 
 @Service
 public class ReadingNoteCommentService {
 
 	@Autowired
 	ReadingNoteCommentRepository readingNoteCommentRepository;
+	@Autowired
+	ReadingNoteRepository readingNoteRepository;
+	
 	
 	// 리스트 처리
 	public List<ReadingNoteComment> getReadingNoteCommentList(){
@@ -28,8 +32,10 @@ public class ReadingNoteCommentService {
 	}
 	
 	// 작성 치러
-	public ReadingNoteComment registReadingNoteComment(ReadingNoteComment readingNoteComment) {
+	public ReadingNoteComment registReadingNoteComment(Long id, ReadingNoteComment readingNoteComment) {
 	
+		readingNoteComment.setReadingNote(readingNoteRepository.findById(id).get());
+		
 		return readingNoteCommentRepository.save(readingNoteComment);
 	}
 	
@@ -44,5 +50,5 @@ public class ReadingNoteCommentService {
 		
 		readingNoteCommentRepository.deleteById(id);
 	}
-	
+
 }

@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.security.domain.ReadingNote;
 import com.project.security.domain.ReadingNoteComment;
+import com.project.security.jwt.SecurityUtil;
+import com.project.security.service.AccountService;
 import com.project.security.service.ReadingNoteCommentService;
 
 @RestController
@@ -21,7 +24,9 @@ import com.project.security.service.ReadingNoteCommentService;
 public class ReadingNoteCommentController {
 
 	@Autowired
-	ReadingNoteCommentService readingNoteCommentService;
+	private ReadingNoteCommentService readingNoteCommentService;
+	@Autowired
+	private AccountService accountService;
 	
 	@GetMapping("/list")
 	public List<ReadingNoteComment> getAll(){
@@ -35,15 +40,25 @@ public class ReadingNoteCommentController {
 		return readingNoteCommentService.getReadingNoteCommentListById(id);
 	}
 	
-	@PostMapping("/regist")
-	public ReadingNoteComment registReadingNoteComment(@RequestBody ReadingNoteComment readingNoteComment) {
+//	@PostMapping("/regist")
+//	public ReadingNoteComment registReadingNoteComment(@RequestBody ReadingNoteComment readingNoteComment) {
+//		
+//		return readingNoteCommentService.registReadingNoteComment(readingNoteComment);
+//	}
+	
+	@PostMapping("/regist/{id}")
+	public void registReadingNoteComment(
+			@PathVariable("id") Long id,
+			@RequestBody ReadingNoteComment readingNoteComment) {
 		
-		return readingNoteCommentService.registReadingNoteComment(readingNoteComment);
+		readingNoteComment.setAccount(accountService.accountId(SecurityUtil.getCurrentAccountEmail()).get());
+		
+		readingNoteCommentService.registReadingNoteComment(id, readingNoteComment);
 	}
 	
 	@PutMapping("/update/{id}")
 	public void updateReadingNoteComment(
-			@PathVariable("id") Integer id,
+			@PathVariable("id") Long id,
 			@RequestBody ReadingNoteComment readingNoteComment) {
 		
 		readingNoteCommentService.updateReadingNoteComment(readingNoteComment);

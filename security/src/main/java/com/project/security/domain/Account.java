@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,11 +21,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "account")
 public class Account implements UserDetails {
 	
@@ -51,28 +59,34 @@ public class Account implements UserDetails {
 	private String created_at;
 	
 	
-//	Account(1) : ReadingProgress(N) 설정
-	@OneToMany(mappedBy = "account_id")
-	public Set<ReadingProgress> readingProgress;
+	// Account(1) : ReadingProgress(N) 설정
+	@OneToMany(mappedBy="account", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({"account"})
+	@Builder.Default
+	private List<ReadingProgress> readingProgress = new ArrayList<>();
 	
-//	Account(1) : ReadingNote(N) 설정
-	@OneToMany(mappedBy = "account_id")
-	public Set<ReadingNote> readingNote;
+	// Account(1) : ReadingNote(N) 설정
+	@OneToMany(mappedBy="account", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({"account"})
+	@Builder.Default
+	private List<ReadingNote> readingNote = new ArrayList<>();
 	
-//	Account(1) : ReadingNoteComment(N) 설정
-	@OneToMany(mappedBy = "account_id")
-	public Set<ReadingNoteComment> readingNoteComment;
+	// Account(1) : ReadingNoteComment(N) 설정
+	@OneToMany(mappedBy="account", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({"account"})
+	@Builder.Default
+	private List<ReadingNoteComment> readingNoteComment = new ArrayList<>();
 	
-//	Account(1) : Meeting(N) 설정
-	@OneToMany(mappedBy = "account_id")
-	public Set<Meeting> meeting;
+//	// Account(1) : Meeting(N) 설정
+//	@OneToMany(mappedBy = "account_id")
+//	public List<Meeting> meeting;
 	
-	
+
     @JsonIgnore
     @Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		 List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();   
-         authorities.add(new SimpleGrantedAuthority("yes"));
+         authorities.add(new SimpleGrantedAuthority("user"));
          return authorities;
 	}
     @JsonIgnore
