@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,12 +17,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.project.security.domain.Account;
-import com.project.security.domain.Image;
 import com.project.security.jwt.JwtToken;
 import com.project.security.jwt.JwtTokenProvider;
 import com.project.security.jwt.SecurityUtil;
@@ -31,10 +27,8 @@ import com.project.security.repository.AccountRepository;
 import com.project.security.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@Slf4j
 @RequestMapping("/account")
 @RequiredArgsConstructor
 public class AccountController {
@@ -65,6 +59,13 @@ public class AccountController {
 		return jwtToken;
 	}
 	
+	// JWT 사용자 정보 반환
+	@GetMapping("/search")
+	public Optional<Account> searchAccount() {
+//		System.out.println(accountService.memberInfo(SecurityUtil.getCurrentAccountEmail()));
+		return accountService.searchAccount(SecurityUtil.getCurrentAccountEmail());
+	}
+	
 	// JWT 로그아웃
 	@PostMapping("/logout")
 	public ResponseEntity<Void> logout(@RequestHeader("Authorization") String accessToken) {
@@ -73,12 +74,12 @@ public class AccountController {
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
-	// 권한 Test
-	@PostMapping("/yes/test")
+	// Token Test
+	@PostMapping("/token/test")
 	public String test() {
 		System.out.println("@@@" + SecurityContextHolder.getContext().getAuthentication().getName() + "@@@");
 		System.out.println("email: " + SecurityUtil.getCurrentAccountEmail());
-		return "Test 성공";
+		return "Token Test 성공";
 	}
 	
 	// 사용자 조회

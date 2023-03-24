@@ -37,6 +37,8 @@ public class ReadingProgressController {
 	@GetMapping("/list/{id}")
 	public Optional<ReadingProgress> getReadingProgressById(@PathVariable("id") Long id) {
 		
+//		readingProgress.setAccount(accountService.accountId(SecurityUtil.getCurrentAccountEmail()).get());
+		
 		return readingProgressService.getReadingProgressListById(id);
 	}
 	

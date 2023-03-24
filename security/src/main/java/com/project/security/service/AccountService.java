@@ -52,6 +52,11 @@ public class AccountService {
 		return jwtToken;
 	}
 	
+	// JWT 사용자 정보 반환
+	public Optional<Account> searchAccount(String email) {
+		return accountRepository.findByEmail(email);
+	}
+	
 	// JWT 로그아웃
 	@Transactional
 	public void logout(String accessToken) {
